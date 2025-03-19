@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, TextChannel } from 'discord.js';
 import * as cron from 'node-cron';
 import * as dotenv from 'dotenv';
-import { fetchDailyAlbum } from './fetchDailyAlbum';
+import { sendDailyMessage } from './helpers/sendDailyMessage';
 
 dotenv.config();
 
@@ -20,33 +20,16 @@ client.once('ready', () => {
 
     // Run daily at 5 AM
     cron.schedule('0 5 * * *', async () => {
-        sendDailyMessage();
+        sendDailyMessage(client);
+    }, {
+        timezone: "America/New_York"
     });
 });
 
 client.on('messageCreate', async (message) => {
     if (message.content === '!test' && message.channelId === CHANNEL_ID) {
-        sendDailyMessage();
+        sendDailyMessage(client);
     }
 });
-
-async function sendDailyMessage() {
-    const channel = client.channels.cache.get(CHANNEL_ID) as TextChannel | undefined;
-
-    if (!channel) {
-        console.error('Channel not found! Check if the bot has access.');
-        return;
-    }
-
-    const albumData = await fetchDailyAlbum(GROUP_ID);
-    const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    if ('error' in albumData) {
-        await channel.send('Error fetching album data');
-        return;
-    } else {
-        const { artist, name, releaseDate, globalReviewsUrl, spotifyId } = albumData;
-        await channel.send(`**${today}**\n\n The album of the day is [${name}](https://open.spotify.com/album/${spotifyId}) by ${artist}, released in ${releaseDate}.\n`);
-    }
-}
 
 client.login(TOKEN);
