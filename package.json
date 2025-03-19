@@ -4,10 +4,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "start": "pm2 start dist/index.js --name album-bot",
-    "stop": "pm2 stop album-bot",
-    "restart": "pm2 restart album-bot",
-    "save": "pm2 save && pm2 startup"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:prod": "pm2 start dist/index.js --name album-bot",
+    "stop:prod": "pm2 stop album-bot",
+    "restart:prod": "pm2 restart album-bot",
+    "save:prod": "pm2 save && pm2 startup"
   },
   "keywords": [],
   "author": "",
