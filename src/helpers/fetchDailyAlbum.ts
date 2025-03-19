@@ -7,6 +7,7 @@ async function fetchDailyAlbum(groupId: string): Promise<AlbumData | ErrorRespon
         const albumData: AlbumData = response.data.currentAlbum;
         return albumData;
     } catch (error) {
+        console.error('Error fetching album data:', error);
         return { error: 'Error fetching album data' };
     }
 }

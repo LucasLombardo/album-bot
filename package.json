@@ -4,12 +4,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "start": "node dist/index.js",
     "start:prod": "pm2 start dist/index.js --name album-bot",
     "stop:prod": "pm2 stop album-bot",
     "restart:prod": "pm2 restart album-bot",
-    "save:prod": "pm2 save && pm2 startup"
+    "save:prod": "pm2 save && pm2 startup",
+    "lint": "eslint . --ext .ts --ignore-pattern dist"
   },
   "keywords": [],
   "author": "",
@@ -22,12 +23,17 @@
     "pm2": "^6.0.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@types/axios": "^0.14.4",
     "@types/dotenv": "^8.2.3",
     "@types/node": "^22.13.10",
     "@types/node-cron": "^3.0.11",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
     "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
   }
 }

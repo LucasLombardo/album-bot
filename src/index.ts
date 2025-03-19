@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, TextChannel } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import * as cron from 'node-cron';
 import * as dotenv from 'dotenv';
 import { sendDailyMessage } from './helpers/sendDailyMessage';

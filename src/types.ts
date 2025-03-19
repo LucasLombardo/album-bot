@@ -2,7 +2,7 @@ export type AlbumData = {
     uuid: string;
     artist: string;
     artistOrigin: string;
-    images: { [key: string]: any }[];
+    images: { [key: string]: string }[];
     genres: string[];
     subGenres: string[];
     name: string;
