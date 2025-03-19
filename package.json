@@ -4,7 +4,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js",
+    "pm2:start": "pm2 start dist/index.js --name album-bot",
+    "pm2:stop": "pm2 stop album-bot",
+    "pm2:restart": "pm2 restart album-bot",
+    "pm2:save": "pm2 save && pm2 startup"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +17,8 @@
   "dependencies": {
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "pm2": "^6.0.5"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",

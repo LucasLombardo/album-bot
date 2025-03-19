@@ -18,8 +18,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 client.once('ready', () => {
     console.log(`Logged in as ${client.user?.tag}!`);
 
-    // Run daily at 9 AM
-    cron.schedule('0 9 * * *', async () => {
+    // Run daily at 5 AM
+    cron.schedule('0 5 * * *', async () => {
         sendDailyMessage();
     });
 });
@@ -39,17 +39,14 @@ async function sendDailyMessage() {
     }
 
     const albumData = await fetchDailyAlbum(GROUP_ID);
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     if ('error' in albumData) {
         await channel.send('Error fetching album data');
         return;
     } else {
-        const { artist, name, releaseDate, globalReviewsUrl } = albumData;
-        await channel.send(`Today's album is ${name} by ${artist}, released on ${releaseDate}. Listen to it [here](${globalReviewsUrl}).`);
+        const { artist, name, releaseDate, globalReviewsUrl, spotifyId } = albumData;
+        await channel.send(`**${today}**\n\n The album of the day is [${name}](https://open.spotify.com/album/${spotifyId}) by ${artist}, released in ${releaseDate}.\n`);
     }
-
-
-    const today = new Date().toLocaleDateString();
-    await channel.send(`Good morning! Today's date is ${today}.`);
 }
 
 client.login(TOKEN);
