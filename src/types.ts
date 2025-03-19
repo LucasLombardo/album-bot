@@ -17,6 +17,7 @@ export type AlbumData = {
   youtubeMusicId: string
   qobuzId: string
   deezerId: string
+  number: number
 }
 
 export type ErrorResponse = {

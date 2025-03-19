@@ -1,4 +1,4 @@
-import { Client, TextChannel } from 'discord.js'
+import { Client, TextChannel, EmbedBuilder } from 'discord.js'
 import * as dotenv from 'dotenv'
 import { fetchDailyAlbum } from './fetchDailyAlbum'
 
@@ -21,19 +21,36 @@ export async function sendDailyMessage(client: Client) {
   }
 
   const albumData = await fetchDailyAlbum(GROUP_ID)
-  const today = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+
   if ('error' in albumData) {
     await channel.send('Error fetching album data')
     return
   } else {
-    const { artist, name, releaseDate, spotifyId } = albumData
-    await channel.send(
-      `**${today}**\n\n The album of the day is [${name}](https://open.spotify.com/album/${spotifyId}) by ${artist}, released in ${releaseDate}.\n`
-    )
+    const {
+      artist,
+      name,
+      releaseDate,
+      spotifyId,
+      images,
+      globalReviewsUrl,
+      wikipediaUrl,
+      genres,
+      subGenres,
+      artistOrigin,
+      number,
+    } = albumData
+    const url = images[1].url
+    const imageEmbed = new EmbedBuilder().setImage(url)
+
+    const tracklist = `Original Tracklist:\n1. Track 1\n2. Track 2\n3. Track 3\n4. Track 4\n5. Track 5\n6. Track 6\n7. Track 7`
+    const quickInfo = `Artist Origin: ${artistOrigin.toUpperCase()}\nYear: ${releaseDate}\nGenres: ${genres.join(', ')}\nSubgenres: ${subGenres.join(', ')}\n`
+    const quickInfoBlock = '```' + quickInfo + tracklist + '```'
+    const links = `**[Spotify](https://open.spotify.com/album/${spotifyId})   |   [Wiki](${wikipediaUrl})   |   [Global Reviews](${globalReviewsUrl})**`
+    const title = `## Album ${number}/1088 - __${name}__ by __${artist}__`
+
+    channel.send({
+      content: `${title}\n${links}\n${quickInfoBlock}`,
+      embeds: [imageEmbed],
+    })
   }
 }

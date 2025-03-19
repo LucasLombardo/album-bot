@@ -9,7 +9,7 @@ async function fetchDailyAlbum(
       `https://1001albumsgenerator.com/api/v1/groups/${groupId}`
     )
     const albumData: AlbumData = response.data.currentAlbum
-    return albumData
+    return { ...albumData, number: response.data.numberOfGeneratedAlbums }
   } catch (error) {
     console.error('Error fetching album data:', error)
     return { error: 'Error fetching album data' }
