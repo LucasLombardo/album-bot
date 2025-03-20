@@ -3,6 +3,10 @@ import { CHANNEL_ID, GROUP_ID } from '../config'
 import { fetchDailyAlbum } from './fetchDailyAlbum'
 import { formatDailyMessage } from './formatDailyMessage'
 
+/**
+ * Sends the daily album message to a specified Discord channel and starts a thread.
+ * @param client - The Discord client instance.
+ */
 export async function sendDailyMessage(client: Client) {
   const channel = client.channels.cache.get(CHANNEL_ID) as
     | TextChannel

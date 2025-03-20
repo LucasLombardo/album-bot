@@ -1,14 +1,18 @@
 import { Client, Message, ThreadChannel } from 'discord.js'
 import { getChatResponse } from './getChatResponse'
 
+/**
+ * Tracks and manages conversations in active Discord threads.
+ * @param client - The Discord client instance.
+ */
 export async function trackThreads(client: Client) {
-  // Store conversation history per thread
+  // Store conversation history per thread in memory, this will get wiped on restarts
   const conversationHistories = new Map<
     string,
     { role: 'user' | 'assistant'; content: string }[]
   >()
 
-  // Fetch all active threads in the server
+  // Fetch all active threads in the server and tracks them
   const guilds = client.guilds.cache
   guilds.forEach(async (guild) => {
     const activeThreads = await guild.channels.fetchActiveThreads()
@@ -19,12 +23,16 @@ export async function trackThreads(client: Client) {
     })
   })
 
+  // Listen for newly created threads to track
+  client.on('threadCreate', (thread) => {
+    console.log(`New thread detected: ${thread.name}`)
+    trackThread(thread)
+  })
+
   console.log(`Listening to all active threads.`)
 
-  // Function to track messages in a thread
   async function trackThread(thread: ThreadChannel) {
     console.log(`Tracking thread: ${thread.name}`)
-
     // Initialize conversation history if it doesn't exist
     if (!conversationHistories.has(thread.id)) {
       conversationHistories.set(thread.id, [
@@ -37,33 +45,23 @@ export async function trackThreads(client: Client) {
 
     // Listen for new messages in the thread
     client.on('messageCreate', async (msg: Message) => {
-      if (msg.channel.id !== thread.id || msg.author.bot) return // Ignore non-thread messages & bot messages
-
+      // Only respond to non bot messages in the tracked thread that start with !q
+      if (
+        msg.channel.id !== thread.id ||
+        msg.author.bot ||
+        (!msg.content.startsWith('!q') && !msg.content.startsWith('!Q'))
+      )
+        return
       console.log(`Received message in thread ${thread.name}: ${msg.content}`)
 
-      // Get conversation history
       const history = conversationHistories.get(thread.id) || []
-
-      // Add user's message to history
       history.push({ role: 'user', content: msg.content })
 
-      // Get ChatGPT response
       const chatResponse = await getChatResponse(history, thread.name)
-
-      // Add ChatGPT's response to history
       history.push({ role: 'assistant', content: chatResponse })
-
-      // Update conversation history
       conversationHistories.set(thread.id, history)
 
-      // Send response
       await msg.reply(chatResponse)
     })
   }
-
-  // Listen for newly created threads
-  client.on('threadCreate', (thread) => {
-    console.log(`New thread detected: ${thread.name}`)
-    trackThread(thread)
-  })
 }

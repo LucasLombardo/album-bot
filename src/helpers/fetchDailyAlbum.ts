@@ -14,6 +14,7 @@ async function fetchDailyAlbum(
       `https://1001albumsgenerator.com/api/v1/groups/${groupId}`
     )
     const albumData: AlbumData = response.data.currentAlbum
+    // Assumes current album is equal to number of generated albums
     return { ...albumData, number: response.data.numberOfGeneratedAlbums }
   } catch (error) {
     console.error('Error fetching album data:', error)

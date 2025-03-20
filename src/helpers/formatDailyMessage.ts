@@ -1,6 +1,11 @@
 import { AlbumData } from '../types'
 import { EmbedBuilder } from 'discord.js'
 
+/**
+ * Formats the daily message for an album, preparing it in discord markdown format.
+ * @param {AlbumData} albumData - The data of the album to format the message for.
+ * @returns {object} An object containing the formatted content and embeds for the message.
+ */
 export function formatDailyMessage(albumData: AlbumData) {
   const {
     artist,
