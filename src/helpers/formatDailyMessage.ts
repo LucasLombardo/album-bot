@@ -1,4 +1,4 @@
-import { AlbumData } from '../types'
+import { AlbumData, AdditionalAlbumInfo } from '../types'
 import { EmbedBuilder } from 'discord.js'
 
 /**
@@ -6,7 +6,10 @@ import { EmbedBuilder } from 'discord.js'
  * @param {AlbumData} albumData - The data of the album to format the message for.
  * @returns {object} An object containing the formatted content and embeds for the message.
  */
-export function formatDailyMessage(albumData: AlbumData) {
+export function formatDailyMessage(
+  albumData: AlbumData,
+  additionalInfo: AdditionalAlbumInfo
+): object {
   const {
     artist,
     name,
@@ -23,7 +26,14 @@ export function formatDailyMessage(albumData: AlbumData) {
   const url = images[1].url
   const imageEmbed = new EmbedBuilder().setImage(url)
 
-  const tracklist = `Original Tracklist:\n1. Track 1\n2. Track 2\n3. Track 3\n4. Track 4\n5. Track 5\n6. Track 6\n7. Track 7`
+  let tracklist = ''
+  if (additionalInfo.tracklist.length) {
+    tracklist =
+      'Original Tracklist:\n' +
+      additionalInfo.tracklist
+        .map((track, index) => `${index + 1}. ${track}`)
+        .join('\n')
+  }
   const quickInfo = `Artist Origin: ${artistOrigin.toUpperCase()}\nYear: ${releaseDate}\nGenres: ${genres.join(', ')}\nSubgenres: ${subGenres.join(', ')}\n`
   const quickInfoBlock = '```' + quickInfo + tracklist + '```'
   const links = `**[Spotify](https://open.spotify.com/album/${spotifyId})   |   [Wiki](${wikipediaUrl})   |   [Global Reviews](${globalReviewsUrl})**`

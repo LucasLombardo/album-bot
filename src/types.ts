@@ -23,3 +23,8 @@ export type AlbumData = {
 export type ErrorResponse = {
   error: string
 }
+
+export type AdditionalAlbumInfo = {
+  tracklist: string[]
+  blurb: string
+}
