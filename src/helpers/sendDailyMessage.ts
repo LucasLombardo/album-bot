@@ -24,9 +24,11 @@ export async function sendDailyMessage(client: Client) {
     return
   } else {
     const message = await channel.send(formatDailyMessage(album))
-    await message.startThread({
+    const thread = await message.startThread({
       name: `${album.number}: ${album.name} - ${album.artist}`,
       autoArchiveDuration: 10080,
     })
+
+    await thread.send(`Post any comments here in the thread, for questions use !q`);
   }
 }

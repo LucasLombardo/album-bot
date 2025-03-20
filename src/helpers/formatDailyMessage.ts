@@ -27,7 +27,7 @@ export function formatDailyMessage(albumData: AlbumData) {
   const quickInfo = `Artist Origin: ${artistOrigin.toUpperCase()}\nYear: ${releaseDate}\nGenres: ${genres.join(', ')}\nSubgenres: ${subGenres.join(', ')}\n`
   const quickInfoBlock = '```' + quickInfo + tracklist + '```'
   const links = `**[Spotify](https://open.spotify.com/album/${spotifyId})   |   [Wiki](${wikipediaUrl})   |   [Global Reviews](${globalReviewsUrl})**`
-  const title = `## Album ${number}/1088 - __${name}__ by __${artist}__`
+  const title = `### Album ${number}/1088 - __${name}__ by __${artist}__`
 
   return {
     content: `${title}\n${links}\n${quickInfoBlock}`,
