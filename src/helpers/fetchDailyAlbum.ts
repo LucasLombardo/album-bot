@@ -1,6 +1,11 @@
 import axios from 'axios'
 import type { AlbumData, ErrorResponse } from '../types'
 
+/**
+ * Fetches the daily album from the 1001 Albums Generator API.
+ * @param groupId - The ID of the group to fetch the daily album for.
+ * @returns The album data or an error response.
+ */
 async function fetchDailyAlbum(
   groupId: string
 ): Promise<AlbumData | ErrorResponse> {

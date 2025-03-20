@@ -1,11 +1,8 @@
 import OpenAI from 'openai'
-import * as dotenv from 'dotenv'
+import { OPENAI_API_KEY } from '../config'
 
-dotenv.config()
-
-// Initialize OpenAI API
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Ensure this is set in your .env file
+  apiKey: OPENAI_API_KEY,
 })
 
 /**
