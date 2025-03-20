@@ -48,9 +48,14 @@ export async function sendDailyMessage(client: Client) {
     const links = `**[Spotify](https://open.spotify.com/album/${spotifyId})   |   [Wiki](${wikipediaUrl})   |   [Global Reviews](${globalReviewsUrl})**`
     const title = `## Album ${number}/1088 - __${name}__ by __${artist}__`
 
-    channel.send({
+    const message = await channel.send({
       content: `${title}\n${links}\n${quickInfoBlock}`,
       embeds: [imageEmbed],
+    })
+
+    await message.startThread({
+      name: `${number}: ${name} - ${artist}`,
+      autoArchiveDuration: 10080,
     })
   }
 }

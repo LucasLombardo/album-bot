@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits } from 'discord.js'
 import * as cron from 'node-cron'
 import * as dotenv from 'dotenv'
 import { sendDailyMessage } from './helpers/sendDailyMessage'
+import { trackThreads } from './helpers/trackThreads'
 
 dotenv.config()
 
@@ -24,9 +25,11 @@ const client = new Client({
 client.once('ready', () => {
   console.log(`Logged in as ${client.user?.tag}!`)
 
-  // Run daily at 5 AM
+  trackThreads(client)
+
+  // Run daily at 9 AM
   cron.schedule(
-    '0 5 * * *',
+    '0 9 * * *',
     async () => {
       sendDailyMessage(client)
     },
