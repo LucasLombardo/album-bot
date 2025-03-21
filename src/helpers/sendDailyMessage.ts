@@ -30,12 +30,12 @@ export async function sendDailyMessage(client: Client) {
     )
     const thread = await message.startThread({
       name: `${album.number}: ${album.name} - ${album.artist}`,
-      autoArchiveDuration: 10080,
+      autoArchiveDuration: 4320,
     })
 
     await thread.send(additionalInfo.blurb)
     await thread.send(
-      `**Post any comments here in the thread, for questions use !q**`
+      `**Post any comments here in the thread, for questions use !m**`
     )
   }
 }
