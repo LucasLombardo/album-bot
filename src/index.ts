@@ -22,6 +22,8 @@ client.once('ready', () => {
   cron.schedule(
     '0 7 * * *',
     async () => {
+      const day = new Date().getDay()
+      if (day === 0 || day === 6) return
       sendDailyMessage(client)
     },
     {
