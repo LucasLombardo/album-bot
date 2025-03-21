@@ -45,11 +45,11 @@ export async function trackThreads(client: Client) {
 
     // Listen for new messages in the thread
     client.on('messageCreate', async (msg: Message) => {
-      // Only respond to non bot messages in the tracked thread that start with !q
+      // Only respond to non bot messages in the tracked thread that start with !m
       if (
         msg.channel.id !== thread.id ||
         msg.author.bot ||
-        (!msg.content.startsWith('!q') && !msg.content.startsWith('!Q'))
+        (!msg.content.startsWith('!m') && !msg.content.startsWith('!M'))
       )
         return
       console.log(`Received message in thread ${thread.name}: ${msg.content}`)
